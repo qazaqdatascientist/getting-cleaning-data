@@ -1,19 +1,17 @@
 ### Introduction: 
 
-This repository is hosting the R code for the assignment of the "Getting and Cleaning Data" course which will be peer assessed.
+This repository hosts the R code for the peer assessment project of the Getting and Cleaning Data course.
 
-The purpose of this project is to demonstrate the collection, work with, and cleaning of this data set. Tidy data have been prepared so can be used for later analysis.
+The course project aims to demonstrate collection, manipulation with testing and training data sets and cleaning of a united (testig and training) data set. The tidy data was prepared for use in further analysis.
 
-### Data Set
+### Data Set: 
 
-The data set "Human Activity Recognition Using Smartphones" has been taken from [UCI](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones).
+The data set "Human Activity Recognition Using Smartphones" was taken from [UCI](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones). It is also stored in the `UCI HAR Dataset/` directory.
 
-### Execution and files
+### Files: 
 
-The Data Set has been stored in `UCI HAR Dataset/` directory.
+The `CodeBook.md` describes the variables, the data and the code that was run to clean the data.
 
-The `CodeBook.md` describes the variables, the data, and the work that has been performed to clean up the data.
+ The `run_analysis.R` is the script that was used for this assessment. It can be loaded in R/Rstudio and executed without any parameters.
 
- The `run_analysis.R` is the script that has been used for this work. It can be loaded in R/Rstudio and executed without any parameters.
-
-The result of the execution is that a `tidy_data_set.txt` file is being created, that stores the data (mean and standard deviation of each measurement per activity&subject) for later analysis.
+The output of running the script is the `tidy_data_set.txt` file that stores the data (mean and standard deviation of each measurement for each measurement) for further analysis.

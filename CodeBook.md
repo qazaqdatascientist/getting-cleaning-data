@@ -2,7 +2,7 @@
 
 This file describes the data, the variables, and the work that has been performed to clean up the data.
 
-### Data Set Description
+### Data Set Description: 
 
 The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
 
@@ -39,86 +39,4 @@ Subsequently, the body linear acceleration and angular velocity were derived in 
 Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
 
 These signals were used to estimate variables of the feature vector for each pattern:  
-'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
-
-### Work/Transformations
-
-#### Load test and training sets and the activities
-
-The data set has been stored in the `UCI HAR Dataset/` directory.
-
-The CDN url provided by the instructor is used instead of the original location, to offload the traffic to the UCI server.
-
-The `unzip` function is used to extract the zip file in this directory.
-
-```
-fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-download.file(fileUrl, destfile = "Dataset.zip", method = "curl")
-unzip("Dataset.zip")
-```
-
-`read.table` is used to load the data to R environment for the data, the activities and the subject of both test and training datasets.
-
-```
-test <- read.table("./UCI HAR Dataset/test/X_test.txt",header=FALSE)
-test_act <- read.table("./UCI HAR Dataset/test/y_test.txt",header=FALSE)
-test_sub <- read.table("./UCI HAR Dataset/test/subject_test.txt",header=FALSE)
-train <- read.table("./UCI HAR Dataset/train/X_train.txt",header=FALSE)
-train_act <- read.table("./UCI HAR Dataset/train/y_train.txt",header=FALSE)
-train_sub <- read.table("./UCI HAR Dataset/train/subject_train.txt",header=FALSE)
-```
-
-#### Descriptive activity names to name the activities in the data set
-
-The class labels linked with their activity names are loaded from the `activity_labels.txt` file. The numbers of the `test_act` and `train_act` data frames are replaced by those names:
-
-```
-activities <- read.table("./UCI HAR Dataset/activity_labels.txt",header=FALSE,colClasses="character")
-test_act$V1 <- factor(test_act$V1,levels=activities$V1,labels=activities$V2)
-train_act$V1 <- factor(train_act$V1,levels=activities$V1,labels=activities$V2)
-```
-
-#### Appropriately labels the data set with descriptive activity names
-
-Each data frame of the data set is labeled - using the `features.txt` - with the information about the variables used on the feature vector. The `Activity` and `Subject` columns are also named properly before merging them to the test and train dataset.
-
-```
-features <- read.table("./UCI HAR Dataset/features.txt",header=FALSE,colClasses="character")
-colnames(test)<-features$V2
-colnames(train)<-features$V2
-colnames(test_act)<-c("Activity")
-colnames(train_act)<-c("Activity")
-colnames(test_sub)<-c("Subject")
-colnames(train_sub)<-c("Subject")
-```
-
-#### Merge test and training sets into one data set, including the activities
-
-The `Activity` and `Subject` columns are appended to the test and train data frames, and then are both merged in the `united` data frame.
-
-```
-test<-cbind(test,test_act)
-test<-cbind(test,test_sub)
-train<-cbind(train,train_act)
-train<-cbind(train,train_sub)
-united<-rbind(test,train)
-```
-
-#### Extract only the measurements on the mean and standard deviation for each measurement
-
-`mean()` and `sd()` are used against `united` via `sapply()` to extract the requested measurements.
-
-```united_mean<-sapply(united,mean,na.rm=TRUE)united_sd<-sapply(united,sd,na.rm=TRUE)
-```
-
-A warning is returned for the `Activity` column because it's not numeric. This does not impact the calcucation of the rest and NA is stored in the new data frames instead, since mean and sd are not applicable in this case. The same applies for `Subject` where we're not interested about the mean and sd, but since it's numeric already there is no warning.
-
-#### Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-
-Finaly the desired result, a `tidy` data table is created with the average of each measurement per activity/subject combination. The new dataset is saved in `tidy.csv` file.
-
-```
-DT <- data.table(united)
-tidy<-DT[,lapply(.SD,mean),by="Activity,Subject"]
-write.table(tidy,file="tidy.csv",sep=",",col.names = NA)
-```
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.###Transformation details: There are 5 parts: * Merges the training and the test sets to create one data set. * Extracts only the measurements on the mean and standard deviation for each measurement. * Uses descriptive activity names to name the activities in the data set * Appropriately labels the data set with descriptive activity names. * Creates a second, independent tidy data set with the average of each variable for each activity and each subject. ###5 steps executed by run_analysis.R: * Require the data.table library.* Load both test and train data* Load the features and activity labels.*Extract the mean and standard deviation column names and data.* Process the data. There are two parts processing test and train data respectively.* Merge data set.
